@@ -104,7 +104,7 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
 SOCIAL_API_CALL_CONTEXT = {
-    'odnoklassniki': {'token' : 'tkn18ZDxQAyoqpLpSXpnEbcep4ggbImu0E14Z8riEJv3wutOPy23dAX3lgCMnTAe7HIR9'
+    'odnoklassniki': {'token' : ''
                       },
 }
 
