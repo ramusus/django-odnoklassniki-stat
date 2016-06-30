@@ -9,5 +9,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', views.call),
-    url(r'^apiddd/', views.call),
+    url(r'^people/', views.getPeople),
 )

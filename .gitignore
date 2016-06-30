@@ -1,2 +1,4 @@
 settings.py
+manage.py
+wsgi.py
 .idea/

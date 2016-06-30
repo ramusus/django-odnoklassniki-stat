@@ -2,10 +2,60 @@ from django.db import models
 from odnoklassniki_api.models import OdnoklassnikiModel, OdnoklassnikiPKModel
 from odnoklassniki_groups.models import Group
 
+DEMOGRAPHY_TYPE = [
+    '<12',
+    '12 - 17',
+    '18 - 24',
+    '25 - 34',
+    '35 - 44',
+    '45 - 54',
+    '55 - 64',
+    '65+',
+]
+REFERENCES_TYPE = [
+    'FEED',
+    'SEARCH',
+    'RECOMMENDATION',
+    'WIDGET',
+    'TARGET',
+    'EXTERNAL',
+    'CATALOG',
+    'INVITE',
+    'DISCUSSIONS',
+    'MY_GROUPS',
+]
+
+TRENDS_TYPE = [
+    'reach',
+    'new_members',
+    'left_members',
+    'members_diff',
+    'likes',
+]
+
+PEOPLE_STAT_CHOICES = (('demography_male', [(type, type) for type in DEMOGRAPHY_TYPE]),
+                       ('demography_female', [(type, type) for type in DEMOGRAPHY_TYPE]),
+                       ('cities', 'cities'),
+                       ('references', [(type, type) for type in REFERENCES_TYPE]),
+                       )
+TRENDS_CHOICES = [(type, type) for type in TRENDS_TYPE]
+
+class Trends(models.Model):
+    group = models.ForeignKey(Group)
+    trend = models.CharField(max_length=100, choices=TRENDS_CHOICES)
+    time = models.DateTimeField(null=True)
+    value = models.IntegerField(null=True, blank=True)
+
+class People(models.Model):
+    group = models.ForeignKey(Group)
+    name = models.CharField(max_length=50, choices=PEOPLE_STAT_CHOICES)
+    value = models.IntegerField()
+    percentage = models.FloatField()
+
 #GetStatOverview
-class groupGetStatOverview(models.Model):
+class GroupStatOverview(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
+    group = models.ForeignKey(Group)
     reach = models.BigIntegerField(null=True, blank=True)
     engagement = models.BigIntegerField(null=True, blank=True)
     feedback = models.BigIntegerField(null=True, blank=True)
@@ -18,32 +68,9 @@ class groupGetStatOverview(models.Model):
     engagement_rate_prev = models.FloatField(null=True, blank=True)
     months = models.CharField(max_length=1000, null=True, blank=True)
 
-#groupGetStatPeople
-class People_demography_male(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
-    d_name = models.CharField(max_length=50, null=True, blank=True)
-    d_value = models.IntegerField(null=True, blank=True)
-    d_percentage = models.FloatField(null=True, blank=True)
-
-class People_cities(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
-    c_name = models.CharField(max_length=50, null=True, blank=True)
-    c_value = models.IntegerField(null=True, blank=True)
-    c_percentage = models.FloatField(null=True, blank=True)
-
-class People_references(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
-    r_name = models.CharField(max_length=50, null=True, blank=True)
-    r_value = models.IntegerField(null=True, blank=True)
-    r_percentage = models.FloatField(null=True, blank=True)
-
 #getStatTopic
 class Topic(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
+    group = models.ForeignKey(Group)
     tid = models.BigIntegerField()
     renderings = models.IntegerField(null=True, blank=True)
     reach = models.IntegerField(null=True, blank=True)
@@ -67,40 +94,8 @@ class Topic(models.Model):
     created = models.DateTimeField(null=True, blank=True)
 
 #getStatTopics
-class getStatTopics(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
+class StatTopics(models.Model):
+    group = models.ForeignKey(Group)
     reach = models.IntegerField(null=True, blank=True)
     likes = models.IntegerField(null=True, blank=True)
     comments = models.IntegerField(null=True, blank=True)
-
-#getStatTrends
-class Trends_reach(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
-    t_time = models.DateTimeField(null=True, blank=True)
-    t_value = models.IntegerField(null=True, blank=True)
-
-class Trends_new_members(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
-    nm_time = models.DateTimeField(null=True, blank=True)
-    nm_value = models.IntegerField(null=True, blank=True)
-
-class Trends_left_members(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
-    lm_time = models.DateTimeField(null=True, blank=True)
-    lm_value = models.IntegerField(null=True, blank=True)
-
-class Trends_members_diff(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
-    md_time = models.DateTimeField(null=True, blank=True)
-    md_value = models.IntegerField(null=True, blank=True)
-
-class Trends_likes(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    gid = models.ForeignKey(Group)
-    l_time = models.DateTimeField(null=True, blank=True)
-    l_value = models.IntegerField(null=True, blank=True)
