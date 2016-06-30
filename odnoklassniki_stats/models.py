@@ -67,7 +67,6 @@ class GroupStatOverview(models.Model):
     engagement_rate_prev = models.FloatField(null=True, blank=True)
     months = models.CharField(max_length=1000, null=True, blank=True)
 
-#getStatTopic
 class Topic(models.Model):
     group = models.ForeignKey(Group)
     tid = models.BigIntegerField()
