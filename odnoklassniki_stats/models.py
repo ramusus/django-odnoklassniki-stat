@@ -52,7 +52,6 @@ class People(models.Model):
     value = models.IntegerField()
     percentage = models.FloatField()
 
-#GetStatOverview
 class GroupStatOverview(models.Model):
     id = models.BigIntegerField(primary_key=True)
     group = models.ForeignKey(Group)
