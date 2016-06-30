@@ -3,3 +3,4 @@ manage.py
 wsgi.py
 .idea/
 django_odnoklassniki_stat/
+dist
